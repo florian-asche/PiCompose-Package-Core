@@ -41,7 +41,7 @@ The package then takes over both files.
 
 ## Notes
 
-- `compose-manager.sh` is the script of the PiCompose image without changes. Its cron jobs call `/usr/local/bin/compose-manager.sh`, while the package installs it to `/usr/bin`.
+- `compose-manager.sh` is the script of the PiCompose image with one fix: the cron jobs call `/usr/bin/compose-manager.sh`, where the script is installed. The image calls `/usr/local/bin/compose-manager.sh`, which does not exist, see [PiCompose pull request 80](https://github.com/florian-asche/PiCompose/pull/80). When that is merged, the script is the same again.
 - The hostname service only renames a host that is called `picompose`, once.
 - This is hardware independent. Audio drivers are separate packages.
 
