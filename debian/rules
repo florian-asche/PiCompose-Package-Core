@@ -1,0 +1,8 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@
+
+override_dh_installsystemd:
+	dh_installsystemd --no-start --no-restart-after-upgrade picompose.service
+	dh_installsystemd --no-start --no-restart-after-upgrade configure_hostname.service
