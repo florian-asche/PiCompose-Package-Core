@@ -10,11 +10,6 @@ Rules-Requires-Root: no
 Package: picompose-core
 Architecture: all
 Depends: ${misc:Depends},
- docker-ce,
- docker-ce-cli,
- containerd.io,
- docker-buildx-plugin,
- docker-compose-plugin,
  cron,
  iproute2,
  systemd,
@@ -35,9 +30,9 @@ Recommends: git,
  python3-pip,
  dfu-util
 Description: PiCompose base system
- Docker with the PiCompose compose manager, the PipeWire audio setup for the
- Linux voice assistant and the hostname setup of the PiCompose image.
+ The compose manager of PiCompose, the PipeWire audio setup for the Linux
+ voice assistant and the hostname setup of the PiCompose image.
  .
  The compose manager deploys every Docker Compose project below /compose
- at boot and on a schedule. The package also adds the Docker apt repository,
- which has to be configured before the Docker packages can be installed.
+ at boot and on a schedule. Docker itself is not part of this package, the
+ PiCompose image installs it from the Docker apt repository.

@@ -6,12 +6,6 @@ Files: *
 Copyright: 2025-2026 Florian Asche
 License: MIT
 
-Files: files/usr/share/keyrings/docker.asc
-Copyright: Docker, Inc.
-License: public-key
- Public OpenPGP key of the Docker apt repository, published by Docker, Inc.
- at https://download.docker.com/linux/debian/gpg.
-
 License: MIT
  Permission is hereby granted, free of charge, to any person obtaining a
  copy of this software and associated documentation files (the "Software"),

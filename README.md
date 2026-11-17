@@ -1,18 +1,19 @@
 # PiCompose-Package-Core
 
-Package `picompose-core` for the [PiCompose APT repository](https://github.com/florian-asche/PiCompose-Repository). It is the content of the first stage of the [PiCompose](https://github.com/florian-asche/PiCompose) image as a package: Docker, the compose manager, the PipeWire audio setup and the hostname setup.
+Package `picompose-core` for the [PiCompose APT repository](https://github.com/florian-asche/PiCompose-Repository). It is the content of the first stage of the [PiCompose](https://github.com/florian-asche/PiCompose) image as a package: the compose manager, the PipeWire audio setup and the hostname setup. Docker is not part of it.
+
+What differs from how the stage does it is documented in [diff.md](diff.md) (in German).
 
 ## Contents
 
 | Part | Files |
 | --- | --- |
-| Docker apt repository | `/etc/apt/sources.list.d/docker.sources`, `/usr/share/keyrings/docker.asc` |
 | Compose manager | `/usr/bin/compose-manager.sh`, `picompose.service` (enabled, not started at install) |
 | Defaults for `/compose` | `/usr/share/picompose/compose/` (README and example), copied to `/compose` by the package if missing |
 | PipeWire audio | `/etc/pipewire/pipewire.conf.d/linux-voice-assistant.conf`, `/etc/wireplumber/wireplumber.conf.d/50-alsa-output.conf` |
 | Hostname | `/usr/bin/configure_hostname.sh`, `configure_hostname.service` (enabled, not started at install) |
 
-The package depends on the Docker packages (`docker-ce`, `docker-ce-cli`, `containerd.io`, `docker-buildx-plugin`, `docker-compose-plugin`) and on the PipeWire packages of the image. The tools the image carries for convenience (git, jq, curl, wget, vim, htop, python3, python3-pip, dfu-util) are recommended.
+The package depends on the PipeWire packages of the image. It does **not** depend on Docker: the Docker apt repository and the Docker packages (`docker-ce`, `docker-ce-cli`, `containerd.io`, `docker-buildx-plugin`, `docker-compose-plugin`) are installed by the PiCompose image, because a package cannot install other packages while it is installed. The compose manager needs Docker and waits up to 90 seconds for it at boot. The tools the image carries for convenience (git, jq, curl, wget, vim, htop, python3, python3-pip, dfu-util) are recommended.
 
 The `postinst` of the package:
 
@@ -22,22 +23,11 @@ The `postinst` of the package:
 
 ## Install
 
-The Docker packages come from the Docker apt repository, which this package configures. Apt has to know that repository before it can install the package, so on a system without it, add it first:
+Install Docker first (the PiCompose image does that), then the package:
 
 ```sh
-sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /usr/share/keyrings/docker.asc
-sudo tee /etc/apt/sources.list.d/docker.sources >/dev/null <<'EOT'
-Types: deb
-URIs: https://download.docker.com/linux/debian
-Suites: trixie
-Components: stable
-Signed-By: /usr/share/keyrings/docker.asc
-EOT
-sudo apt update
 sudo apt install picompose-core
 ```
-
-The package then takes over both files.
 
 ## Notes
 

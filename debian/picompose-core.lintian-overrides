@@ -1,2 +1,0 @@
-# The package configures the Docker apt repository, which the Docker dependencies need.
-picompose-core: package-installs-apt-sources [etc/apt/sources.list.d/docker.sources]
