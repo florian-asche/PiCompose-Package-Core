@@ -1,3 +1,9 @@
+picompose-core (0.1.0) trixie; urgency=medium
+
+  * Feed the PiCompose image from the package and keep only required dependencies (#3)
+
+ -- Florian Asche <github@florian-asche.de>  Wed, 18 Nov 2026 18:24:27 +0000
+
 picompose-core (0.0.1) trixie; urgency=medium
 
   * Add CLAUDE.md with the working rules and the Raspberry Pi OS compatibility check
