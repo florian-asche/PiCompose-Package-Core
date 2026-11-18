@@ -4,8 +4,6 @@
 
 Package `picompose-core` for the [PiCompose APT repository](https://github.com/florian-asche/PiCompose-Repository). The [PiCompose](https://github.com/florian-asche/PiCompose) image installs it to get the compose manager, the hostname setup and the PipeWire configuration files. Docker and the PipeWire packages are not part of it.
 
-What differs from how the image installed these parts before is documented in [diff.md](diff.md) (in German).
-
 ## Contents
 
 | Part | Files |
