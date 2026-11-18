@@ -1,0 +1,6 @@
+// Install updates of the PiCompose APT repository (suite trixie, not trixie-nightly) automatically.
+// The Debian security updates come from the default 50unattended-upgrades of the unattended-upgrades package.
+Unattended-Upgrade::Origins-Pattern:: "origin=PiCompose,label=PiCompose,codename=trixie";
+
+APT::Periodic::Update-Package-Lists "1";
+APT::Periodic::Unattended-Upgrade "1";

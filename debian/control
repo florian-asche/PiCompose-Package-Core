@@ -12,7 +12,8 @@ Architecture: all
 Depends: ${misc:Depends},
  cron,
  iproute2,
- systemd
+ systemd,
+ unattended-upgrades
 Description: PiCompose base system
  The compose manager of PiCompose, the PipeWire and WirePlumber
  configuration for the Linux voice assistant and the hostname setup of the
