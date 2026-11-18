@@ -11,21 +11,7 @@ case "$1" in
         fi
         if [ ! -e /compose/example ]; then
             mkdir -p /compose/example
-            cp /usr/share/picompose/compose/example/* /compose/example/
-        fi
-
-        # PipeWire-ALSA bridge
-        mkdir -p /etc/alsa/conf.d
-        ln -sf /usr/share/alsa/alsa.conf.d/50-pipewire.conf /etc/alsa/conf.d/50-pipewire.conf
-
-        # The rtprio/nice limits of PipeWire only apply to members of the pipewire
-        # group, and services have to run without an active user session.
-        if getent passwd pi >/dev/null 2>&1; then
-            if getent group pipewire >/dev/null 2>&1; then
-                usermod -aG pipewire pi
-            fi
-            mkdir -p /var/lib/systemd/linger
-            touch /var/lib/systemd/linger/pi
+            cp -a /usr/share/picompose/compose/example/. /compose/example/
         fi
         ;;
 esac

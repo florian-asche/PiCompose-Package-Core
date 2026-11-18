@@ -1,6 +1,6 @@
 # AI working guide for PiCompose-Package-Core
 
-Package `picompose-core` for the [PiCompose APT repository](https://github.com/florian-asche/PiCompose-Repository). It is the stage `01-stage-picompose` of the [PiCompose](https://github.com/florian-asche/PiCompose) image as a Debian package. Read `README.md` for what the package contains. When this file and the code disagree, the code wins, fix this file in the same change.
+Package `picompose-core` for the [PiCompose APT repository](https://github.com/florian-asche/PiCompose-Repository). It replaces the steps `03-picompose`, `04-install-pipewire-audio` and `05-set-hostname` of the stage `01-stage-base` of the [PiCompose](https://github.com/florian-asche/PiCompose) image as a Debian package. Read `README.md` for what the package contains. When this file and the code disagree, the code wins, fix this file in the same change.
 
 ## Rules
 
@@ -29,7 +29,7 @@ The package has to work on the Raspberry Pi OS that the PiCompose images are bui
 1. **Find out what the images use today.** Do not assume it. Read these files of the PiCompose repository (`/home/florian/repos/PiCompose` if it is checked out, otherwise `https://github.com/florian-asche/PiCompose`):
    - `.github/workflows/build-image-template.yml`: the Debian release (`releaseversion`, default `trixie`), the pi-gen repository and branch (`pi-gen-repository`, `pi-gen-version`), the user (`username`) and the runner architecture.
    - `.github/workflows/build-all.yml`: which images exist and which stages each of them builds (`stage-list`), so which images contain the stage of this package.
-   - The stage directory `01-stage-picompose` and its `README`/`docs/` for what the image does today.
+   - The stage directory `01-stage-base` and its `README`/`docs/` for what the image does today.
 2. **Check this package against it.** What to look at:
    - The Debian release: do all packages in `Depends`, `Recommends` and `Build-Depends` exist in that release and in the Raspberry Pi archive (`archive.raspberrypi.com/debian`)? Check with `apt-cache policy` in a container of that release.
    - The kernel and firmware layout of Raspberry Pi OS for that release (kernel version, `/boot/firmware`, `config.txt`, `usercfg.txt`).
@@ -37,6 +37,6 @@ The package has to work on the Raspberry Pi OS that the PiCompose images are bui
    - Defaults of the base system that the package relies on: the user `pi` with the UID 1000, systemd, PipeWire and WirePlumber, `cron`.
    Specific to this package:
    - Docker: it is not part of this package, the PiCompose image installs it. The compose manager has to work with the Docker version the image gets from the Docker apt repository for the release (`docker compose` plugin).
-   - PipeWire and WirePlumber: the configuration syntax and the file locations of the versions in the release (WirePlumber 0.5 reads `wireplumber.conf.d/*.conf`). Package names in `Depends` have to exist in the release.
+   - PipeWire and WirePlumber: the configuration syntax and the file locations of the versions in the release (WirePlumber 0.5 reads `wireplumber.conf.d/*.conf`). The package ships only the configuration files, the image installs the PipeWire packages, so check that the file locations match the versions the image installs.
    - The user `pi` with the UID 1000, which `postinst`, the units and the compose projects assume.
 3. **Write down the verdict**: which release, kernel and image definition you looked at, what you checked and how (commands), what you could not check (hardware), and what has to change if the base moves, for example to a new Debian release. If a change makes the package fit only a newer or only an older base than the images use, say so and ask the developer before going on.
