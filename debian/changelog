@@ -1,3 +1,9 @@
+picompose-core (0.2.0) trixie; urgency=medium
+
+  * Install unattended-upgrades and upgrade the PiCompose repository automatically (#4)
+
+ -- Florian Asche <github@florian-asche.de>  Wed, 18 Nov 2026 18:55:08 +0000
+
 picompose-core (0.1.0) trixie; urgency=medium
 
   * Feed the PiCompose image from the package and keep only required dependencies (#3)
