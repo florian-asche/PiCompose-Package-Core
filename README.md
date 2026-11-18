@@ -1,5 +1,7 @@
 # PiCompose-Package-Core
 
+[![Version](https://github.com/florian-asche/PiCompose-Package-Core/actions/workflows/version.yml/badge.svg?branch=main)](https://github.com/florian-asche/PiCompose-Package-Core/actions/workflows/version.yml) [![GitHub Release Version](https://img.shields.io/github/v/release/florian-asche/PiCompose-Package-Core?label=version)](https://github.com/florian-asche/PiCompose-Package-Core/releases) [![GitHub License](https://img.shields.io/github/license/florian-asche/PiCompose-Package-Core)](https://github.com/florian-asche/PiCompose-Package-Core/blob/main/LICENSE)
+
 Package `picompose-core` for the [PiCompose APT repository](https://github.com/florian-asche/PiCompose-Repository). It is the content of the first stage of the [PiCompose](https://github.com/florian-asche/PiCompose) image as a package: the compose manager, the PipeWire audio setup and the hostname setup. Docker is not part of it.
 
 What differs from how the stage does it is documented in [diff.md](diff.md) (in German).
