@@ -9,11 +9,11 @@ Package `picompose-core` for the [PiCompose APT repository](https://github.com/f
 | Part | Files |
 | --- | --- |
 | Compose manager | `/usr/bin/compose-manager.sh`, `picompose.service` (enabled, not started at install) |
-| Defaults for `/compose` | `/usr/share/picompose/compose/` (README and example, including the `.env`), copied to `/compose` by the package if missing |
+| Defaults for `/compose` | `/usr/share/picompose/compose/` (README and example, including the `.env`), the README is copied to `/compose` if it is missing, the example is copied to `/compose/example` on every install and upgrade and replaces the files of the same name there |
 | PipeWire and WirePlumber configuration | `/etc/pipewire/pipewire.conf.d/linux-voice-assistant.conf`, `/etc/wireplumber/wireplumber.conf.d/50-alsa-output.conf` (conffiles, the directories are created by the package if they do not exist) |
 | Hostname | `/usr/bin/configure_hostname.sh`, `configure_hostname.service` (enabled, not started at install) |
 
-The `postinst` of the package creates `/compose` and copies the README and the example if they are missing. It does nothing else.
+The `postinst` of the package creates `/compose`, copies the README if it is missing and replaces the files of the example in `/compose/example` with the ones of the package. Other files in `/compose/example` and everything else in `/compose` are not touched. It does nothing else.
 
 ## Required packages
 

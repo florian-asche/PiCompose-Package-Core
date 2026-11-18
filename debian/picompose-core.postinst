@@ -3,16 +3,15 @@ set -e
 
 case "$1" in
     configure)
-        # Defaults for the user-owned compose directory are copied only if missing.
         mkdir -p /compose
         chmod 755 /compose
         if [ ! -e /compose/README.txt ]; then
             install -m 644 /usr/share/picompose/compose/README.txt /compose/README.txt
         fi
-        if [ ! -e /compose/example ]; then
-            mkdir -p /compose/example
-            cp -a /usr/share/picompose/compose/example/. /compose/example/
-        fi
+
+        # The example is a reference, so it is replaced on every install and upgrade.
+        mkdir -p /compose/example
+        cp -a /usr/share/picompose/compose/example/. /compose/example/
         ;;
 esac
 
