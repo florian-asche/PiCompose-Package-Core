@@ -35,6 +35,7 @@ The package has to work on the Raspberry Pi OS that the PiCompose images are bui
    - The architectures: the images are built for arm64, check whether armhf is still needed.
    - Defaults of the base system that the package relies on: the user `pi` with the UID 1000, systemd, PipeWire and WirePlumber, `cron`.
    Specific to this package:
+   - Automatic updates: `files/etc/apt/apt.conf.d/51picompose-unattended-upgrades` names the Debian release in `codename=trixie`. When the base moves to a new Debian release, change the codename there, together with the suite the PiCompose image uses.
    - Docker: it is not part of this package, the PiCompose image installs it. The compose manager has to work with the Docker version the image gets from the Docker apt repository for the release (`docker compose` plugin).
    - PipeWire and WirePlumber: the configuration syntax and the file locations of the versions in the release (WirePlumber 0.5 reads `wireplumber.conf.d/*.conf`). The package ships only the configuration files, the image installs the PipeWire packages, so check that the file locations match the versions the image installs.
    - The user `pi` with the UID 1000, which `postinst`, the units and the compose projects assume.
