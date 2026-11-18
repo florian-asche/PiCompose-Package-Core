@@ -15,7 +15,7 @@ What differs from how the stage does it is documented in [diff.md](diff.md) (in 
 | PipeWire audio | `/etc/pipewire/pipewire.conf.d/linux-voice-assistant.conf`, `/etc/wireplumber/wireplumber.conf.d/50-alsa-output.conf` |
 | Hostname | `/usr/bin/configure_hostname.sh`, `configure_hostname.service` (enabled, not started at install) |
 
-The package depends on the PipeWire packages of the image. It does **not** depend on Docker: the Docker apt repository and the Docker packages (`docker-ce`, `docker-ce-cli`, `containerd.io`, `docker-buildx-plugin`, `docker-compose-plugin`) are installed by the PiCompose image, because a package cannot install other packages while it is installed. The compose manager needs Docker and waits up to 90 seconds for it at boot. The tools the image carries for convenience (git, jq, curl, wget, vim, htop, python3, python3-pip, dfu-util) are recommended.
+The package depends on the PipeWire packages of the image. It does **not** depend on Docker: the Docker apt repository and the Docker packages (`docker-ce`, `docker-ce-cli`, `containerd.io`, `docker-buildx-plugin`, `docker-compose-plugin`) are installed by the PiCompose image, because a package cannot install other packages while it is installed. The compose manager needs Docker and waits up to 90 seconds for it at boot. The tools the image carries for convenience (git, jq, curl, wget, vim, htop, dfu-util) are recommended. PiCompose itself needs no Python on the device.
 
 The `postinst` of the package:
 

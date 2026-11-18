@@ -10,7 +10,7 @@ Pflege: Jede Änderung, die eine Abweichung neu schafft, ändert oder beseitigt,
 
 ## Anders gelöst
 
-- **Hilfsprogramme.** `git`, `jq`, `curl`, `wget`, `vim`, `htop`, `python3`, `python3-pip` und `dfu-util` (Paketliste `01-packages/02-packages`) werden als `Recommends` eingetragen. Die Stage installiert sie immer.
+- **Hilfsprogramme.** `git`, `jq`, `curl`, `wget`, `vim`, `htop` und `dfu-util` (Paketliste `01-packages/02-packages`) werden als `Recommends` eingetragen. Die Stage installiert sie immer. `python3` und `python3-pip` stehen ebenfalls in der Paketliste, werden aber nicht eingetragen: Kein Skript von PiCompose (Compose-Manager, Audio-, Hostname-Skripte) nutzt Python, nur `scripts/generate-imager-json.py` im CI. Das Image installiert sie weiter über seine eigene Paketliste.
 - **PipeWire-Pakete** (`03-install-pipewire-audio/01-packages`) sind `Depends` des Pakets, mit denselben Paketnamen wie in der Stage.
 - Die Unit-Datei liegt in `/usr/lib/systemd/system/` statt in `/etc/systemd/system/`. Aktiviert wird sie durch `dh_installsystemd` im Paket (beim Installieren aktiviert, aber nicht gestartet) statt durch `systemctl enable` im Chroot der Stage. Der Inhalt der Unit ist unverändert. Das gilt für `picompose.service` und `configure_hostname.service`.
 - **Das Verzeichnis `/compose`.** Die Stage legt `/compose`, `README.txt` und `example/` beim Bau des Images direkt an. Das Paket liefert die Vorlagen nach `/usr/share/picompose/compose/` und kopiert sie in der `postinst` nur dorthin, wo sie noch nicht existieren. Änderungen des Benutzers in `/compose` bleiben bei einem Upgrade erhalten, vorhandene Dateien werden nie überschrieben.

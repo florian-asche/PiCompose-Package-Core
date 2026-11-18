@@ -26,8 +26,6 @@ Recommends: git,
  wget,
  vim,
  htop,
- python3,
- python3-pip,
  dfu-util
 Description: PiCompose base system
  The compose manager of PiCompose, the PipeWire audio setup for the Linux
