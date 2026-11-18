@@ -12,6 +12,7 @@ Package `picompose-core` for the [PiCompose APT repository](https://github.com/f
 | Defaults for `/compose` | `/usr/share/picompose/compose/` (README and example, including the `.env`), the README is copied to `/compose` if it is missing, the example is copied to `/compose/example` on every install and upgrade and replaces the files of the same name there |
 | PipeWire and WirePlumber configuration | `/etc/pipewire/pipewire.conf.d/linux-voice-assistant.conf`, `/etc/wireplumber/wireplumber.conf.d/50-alsa-output.conf` (conffiles, the directories are created by the package if they do not exist) |
 | Hostname | `/usr/bin/configure_hostname.sh`, `configure_hostname.service` (enabled, not started at install) |
+| Automatic updates | `/etc/apt/apt.conf.d/51picompose-unattended-upgrades` (conffile): lets `unattended-upgrades` install the updates of the PiCompose APT repository (suite `trixie`, not `trixie-nightly`) and turns on the daily package list update and upgrade run |
 
 The `postinst` of the package creates `/compose`, copies the README if it is missing and replaces the files of the example in `/compose/example` with the ones of the package. Other files in `/compose/example` and everything else in `/compose` are not touched. It does nothing else.
 
@@ -24,6 +25,7 @@ Only what the scripts of the package need to run is a dependency of the package 
 | `cron` | `compose-manager.sh` sets up the schedule with `crontab` |
 | `iproute2` | `configure_hostname.sh` reads the network interface with `ip` |
 | `systemd` | the two units and `hostnamectl` in `configure_hostname.sh` |
+| `unattended-upgrades` | installs the updates of the PiCompose packages and the Debian security updates, configured by `51picompose-unattended-upgrades` |
 
 Required at runtime, but **not** a dependency, because the PiCompose image installs it from the Docker apt repository:
 
@@ -48,6 +50,7 @@ sudo apt install picompose-core
 ## Notes
 
 - `compose-manager.sh` is the script of the PiCompose image without changes (state of the commit that fixed its cron path, PiCompose pull request 80).
+- The Debian security updates come from the default configuration of `unattended-upgrades`. The Raspberry Pi archive is not covered by it, so its packages (kernel, firmware) are not upgraded automatically. A device on the `trixie-nightly` suite gets no automatic upgrades of PiCompose packages.
 - The hostname service only renames a host that is called `picompose`, once.
 - This is hardware independent. Audio drivers are separate packages.
 
