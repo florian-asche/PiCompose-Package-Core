@@ -10,7 +10,7 @@ Package `picompose-core` for the [PiCompose APT repository](https://github.com/f
 | --- | --- |
 | Compose manager | `/usr/bin/compose-manager.sh`, `picompose.service` (enabled, not started at install) |
 | Defaults for `/compose` | `/usr/share/picompose/compose/` (README and example, including the `.env`), the README is copied to `/compose` if it is missing, the example is copied to `/compose/example` on every install and upgrade and replaces the files of the same name there |
-| PipeWire and WirePlumber configuration | `/etc/pipewire/pipewire.conf.d/linux-voice-assistant.conf`, `/etc/wireplumber/wireplumber.conf.d/50-alsa-output.conf` (conffiles, the directories are created by the package if they do not exist) |
+| PipeWire and WirePlumber configuration | `/etc/pipewire/pipewire.conf.d/linux-voice-assistant.conf`, `/etc/wireplumber/wireplumber.conf.d/50-alsa-output.conf`, `/etc/wireplumber/wireplumber.conf.d/51-default-volume.conf` (sets the volume WirePlumber gives a sound card that has no stored state to 100 %, a state stored in `~/.local/state/wireplumber` wins; conffiles, the directories are created by the package if they do not exist) |
 | Hostname | `/usr/bin/configure_hostname.sh`, `configure_hostname.service` (enabled, not started at install) |
 | Automatic updates | `/etc/apt/apt.conf.d/51picompose-unattended-upgrades` (conffile): lets `unattended-upgrades` install the updates of the PiCompose APT repository (suite `trixie`, not `trixie-nightly`) and turns on the daily package list update and upgrade run |
 
