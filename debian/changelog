@@ -1,3 +1,9 @@
+picompose-core (0.2.3) trixie; urgency=medium
+
+  * Check for updates of the GitHub Actions daily (#7)
+
+ -- Florian Asche <github@florian-asche.de>  Fri, 20 Nov 2026 20:10:40 +0000
+
 picompose-core (0.2.2) trixie; urgency=medium
 
   * Set the default volume of sound cards without a stored state to 100 % (#6)
