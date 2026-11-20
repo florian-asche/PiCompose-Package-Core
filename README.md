@@ -2,30 +2,46 @@
 
 [![Version](https://github.com/florian-asche/PiCompose-Package-Core/actions/workflows/version.yml/badge.svg?branch=main)](https://github.com/florian-asche/PiCompose-Package-Core/actions/workflows/version.yml) [![GitHub Release Version](https://img.shields.io/github/v/release/florian-asche/PiCompose-Package-Core?label=version)](https://github.com/florian-asche/PiCompose-Package-Core/releases) [![GitHub License](https://img.shields.io/github/license/florian-asche/PiCompose-Package-Core)](https://github.com/florian-asche/PiCompose-Package-Core/blob/main/LICENSE)
 
-Package `picompose-core` for the [PiCompose APT repository](https://github.com/florian-asche/PiCompose-Repository). It is the content of the first stage of the [PiCompose](https://github.com/florian-asche/PiCompose) image as a package: the compose manager, the PipeWire audio setup and the hostname setup. Docker is not part of it.
-
-What differs from how the stage does it is documented in [diff.md](diff.md) (in German).
+Package `picompose-core` for the [PiCompose APT repository](https://github.com/florian-asche/PiCompose-Repository). The [PiCompose](https://github.com/florian-asche/PiCompose) image installs it to get the compose manager, the hostname setup and the PipeWire configuration files. Docker and the PipeWire packages are not part of it.
 
 ## Contents
 
 | Part | Files |
 | --- | --- |
 | Compose manager | `/usr/bin/compose-manager.sh`, `picompose.service` (enabled, not started at install) |
-| Defaults for `/compose` | `/usr/share/picompose/compose/` (README and example), copied to `/compose` by the package if missing |
-| PipeWire audio | `/etc/pipewire/pipewire.conf.d/linux-voice-assistant.conf`, `/etc/wireplumber/wireplumber.conf.d/50-alsa-output.conf`, `/etc/wireplumber/wireplumber.conf.d/51-default-volume.conf` (sets the volume WirePlumber gives a sound card that has no stored state to 100 %, a state stored in `~/.local/state/wireplumber` wins) |
+| Defaults for `/compose` | `/usr/share/picompose/compose/` (README and example, including the `.env`), the README is copied to `/compose` if it is missing, the example is copied to `/compose/example` on every install and upgrade and replaces the files of the same name there |
+| PipeWire and WirePlumber configuration | `/etc/pipewire/pipewire.conf.d/linux-voice-assistant.conf`, `/etc/wireplumber/wireplumber.conf.d/50-alsa-output.conf`, `/etc/wireplumber/wireplumber.conf.d/51-default-volume.conf` (sets the volume WirePlumber gives a sound card that has no stored state to 100 %, a state stored in `~/.local/state/wireplumber` wins; conffiles, the directories are created by the package if they do not exist) |
 | Hostname | `/usr/bin/configure_hostname.sh`, `configure_hostname.service` (enabled, not started at install) |
+| Automatic updates | `/etc/apt/apt.conf.d/51picompose-unattended-upgrades` (conffile): lets `unattended-upgrades` install the updates of the PiCompose APT repository (suite `trixie`, not `trixie-nightly`) and turns on the daily package list update and upgrade run |
 
-The package depends on the PipeWire packages of the image. It does **not** depend on Docker: the Docker apt repository and the Docker packages (`docker-ce`, `docker-ce-cli`, `containerd.io`, `docker-buildx-plugin`, `docker-compose-plugin`) are installed by the PiCompose image, because a package cannot install other packages while it is installed. The compose manager needs Docker and waits up to 90 seconds for it at boot. The tools the image carries for convenience (git, jq, curl, wget, vim, htop, python3, python3-pip, dfu-util) are recommended.
+The `postinst` of the package creates `/compose`, copies the README if it is missing and replaces the files of the example in `/compose/example` with the ones of the package. Other files in `/compose/example` and everything else in `/compose` are not touched. It does nothing else.
 
-The `postinst` of the package:
+## Required packages
 
-- creates `/compose` and copies the README and the example if they are missing
-- links the PipeWire-ALSA bridge into `/etc/alsa/conf.d`
-- adds the user `pi` to the group `pipewire` and enables lingering for `pi`, if that user exists
+Only what the scripts of the package need to run is a dependency of the package (`Depends`). Everything else is installed by the PiCompose image.
+
+| Package | Needed for |
+| --- | --- |
+| `cron` | `compose-manager.sh` sets up the schedule with `crontab` |
+| `iproute2` | `configure_hostname.sh` reads the network interface with `ip` |
+| `systemd` | the two units and `hostnamectl` in `configure_hostname.sh` |
+| `unattended-upgrades` | installs the updates of the PiCompose packages and the Debian security updates, configured by `51picompose-unattended-upgrades` |
+
+Required at runtime, but **not** a dependency, because the PiCompose image installs it from the Docker apt repository:
+
+- Docker Engine with the `docker compose` plugin (`docker-ce`, `docker-ce-cli`, `containerd.io`, `docker-buildx-plugin`, `docker-compose-plugin`). The compose manager waits up to 90 seconds for Docker at boot.
+
+Not required and not installed by this package, the PiCompose image installs them in its own steps:
+
+- the PipeWire packages (`pipewire`, `wireplumber`, `pipewire-audio-client-libraries`, `libspa-0.2-bluetooth`, `pipewire-audio`, `pulseaudio-utils`, `pipewire-pulse`). The configuration files of the package only take effect once they are installed.
+- the PipeWire-ALSA bridge, the group membership of `pi` in `pipewire` and the lingering of `pi`
+- the convenience tools (`git`, `jq`, `curl`, `wget`, `vim`, `htop`, `python3`, `python3-pip`, `dfu-util`)
+
+Keep the table up to date: a new `Depends` has to be listed here with the reason.
 
 ## Install
 
-Install Docker first (the PiCompose image does that), then the package:
+The PiCompose image installs the package after the Docker step:
 
 ```sh
 sudo apt install picompose-core
@@ -34,6 +50,7 @@ sudo apt install picompose-core
 ## Notes
 
 - `compose-manager.sh` is the script of the PiCompose image without changes (state of the commit that fixed its cron path, PiCompose pull request 80).
+- The Debian security updates come from the default configuration of `unattended-upgrades`. The Raspberry Pi archive is not covered by it, so its packages (kernel, firmware) are not upgraded automatically. A device on the `trixie-nightly` suite gets no automatic upgrades of PiCompose packages.
 - The hostname service only renames a host that is called `picompose`, once.
 - This is hardware independent. Audio drivers are separate packages.
 
